@@ -1,4 +1,4 @@
-from djando.db import models
+from django import models
 
 from supplier.models import Supplier
 
