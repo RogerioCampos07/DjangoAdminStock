@@ -14,6 +14,7 @@ psycopg2-binary = ">=2.9.10,<3.0.0"
 python-dotenv = ">=1.1.1,<2.0.0"
 
 [tool.ruff]
+exclude = ['settings.py','manage.py']
 line-length = 79
 extend-exclude = ['migrations']
 
