@@ -1,11 +1,9 @@
 from django.db import models
 
-from supplier.models import Supplier
-
 
 class ContactPerson(models.Model):
     supplier = models.ForeignKey(
-        Supplier,
+        'supplier.Supplier',
         on_delete=models.CASCADE,
         related_name='contact_persons',
         verbose_name='Fornecedor',
