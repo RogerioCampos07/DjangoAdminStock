@@ -22,8 +22,8 @@ class ContactPerson(models.Model):
 
     class Meta:
         db_table = 'contact_person'
-        verbose_name = 'Pessoa de Contato'
-        verbose_name_plural = 'Pessoas de Contato'
+        verbose_name = 'Representante Comercial'
+        verbose_name_plural = 'Representantes Comerciais'
         ordering = ['name']
 
     def __str__(self):
