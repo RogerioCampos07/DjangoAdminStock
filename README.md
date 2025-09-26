@@ -1,38 +1,99 @@
 # DjangoAdminStock
 
-Um sistema de gerenciamento de estoque simples e eficiente, administrado via painel Django Admin.
+## Sobre o Projeto
 
-## Visão Geral
+Este é o **`django-admin-stock`**, um sistema de gestão de estoque construído sobre o **Admin do Django**. O objetivo é ter uma ferramenta simples e funcional para controlar produtos, fornecedores e o fluxo de estoque de forma centralizada.
 
-Este projeto visa fornecer uma solução robusta e fácil de usar para controle de estoque, com foco na interface de administração do Django para gestão completa de produtos, entradas, saídas e relatórios.
+A estrutura do projeto é modular, com apps bem definidos para facilitar a organização e manutenção:
 
-## Roadmap do Projeto
+- **`supplier`**: Gerencia fornecedores e seus contatos.
+- **`product`**: Gerencia produtos, categorias e marcas.
+- **`movement_stock`**: Gerencia as entradas e saídas de produtos.
+- **`inventory`**: Gerencia o estoque atual de cada produto.
 
-Este é o nosso plano de desenvolvimento para o DjangoAdminStock.
+---
 
-### Fase 1: Core do Sistema (Concluído)
+## Requisitos do Sistema
 
-- [x] Configuração inicial do projeto Django e Poetry.
-- [ ] Modelos básicos para Produtos (Nome, Preço, SKU, etc.).
-- [ ] Registro dos modelos no Django Admin.
-- [ ] Integração com Docker Compose (Django, PostgreSQL).
+- **Linux**: Nosso ambiente de desenvolvimento e produção.
+- **Python 3.13.3**
+- **Poetry**
+- **Docker** (opcional, para a fase de deploy)
 
-### Fase 2: Gestão de Inventário (Em Andamento)
+---
 
-- [ ] Modelos para Entrada de Estoque (Fornecedor, Quantidade, Data).
-- [ ] Modelos para Saída de Estoque (Cliente, Quantidade, Data).
-- [ ] Lógica para atualização automática do estoque total ao registrar entradas/saídas.
-- [ ] Interface administrativa para gerenciar Entradas e Saídas.
+## Configuração e Instalação
 
-### Fase 3: Funcionalidades Avançadas (Próximo)
+### 1. Clone o repositório
 
-- [ ] Relatórios básicos de estoque (Produtos com baixo estoque, Movimentação por período).
-- [ ] Funcionalidade de busca e filtro aprimorados no Admin.
-- [ ] Geração de PDF/CSV para relatórios.
+```bash
+git clone https://github.com/RogerioCampos07/DjangoAdminStock.git
+cd django-admin-stock
+```
 
-### Ideias Futuras
+### 2. Instale as dependências com Poetry
 
-- Integração com leitores de código de barras.
-- Notificações de baixo estoque.
-- Histórico de preços.
-- IA - Agentes para analise de estoque.
+```bash
+poetry install
+```
+
+Este comando lê o arquivo `pyproject.toml`, instala todas as dependências e cria um ambiente virtual isolado.
+
+### 3. Ative o ambiente virtual
+
+```bash
+source ./venv/bin/activate
+```
+
+Isso ativa o ambiente virtual criado pelo Poetry, permitindo executar os comandos do Django.
+
+### 4. Execute as migrações do banco de dados
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 5. Crie um superusuário
+
+```bash
+python manage.py createsuperuser
+```
+
+### 6. Inicie o servidor de desenvolvimento
+
+```bash
+python manage.py runserver
+```
+
+Com o servidor rodando, acesse `http://localhost:8000/admin/` no navegador e faça login com o superusuário criado.
+
+---
+
+## Como Usar
+
+O projeto é inteiramente baseado no painel de administração do Django. Siga a ordem de cadastro:
+
+1. Acesse o painel em `http://localhost:8000/admin/`.
+2. Cadastre **Categorias de Produto** e **Marcas**.
+3. Cadastre os **Fornecedores** e, em seguida, seus **Representantes Comerciais**.
+4. Crie os **Produtos** associando-os às categorias, marcas e fornecedores.
+5. Use o painel de **Movimentação de Estoque** para registrar as entradas e saídas; o painel de **Estoque** é atualizado automaticamente.
+
+---
+
+## Contribuindo
+
+Sinta-se à vontade para contribuir seguindo o fluxo padrão:
+
+1. Faça um fork do projeto.
+2. Crie uma nova branch: `git checkout -b feature/minha-melhoria`.
+3. Implemente mudanças e faça commit: `git commit -am 'Adiciona uma melhoria top'`.
+4. Envie a branch: `git push origin feature/minha-melhoria`.
+5. Abra um Pull Request.
+
+---
+
+## Licença
+
+Este projeto está sob a licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
