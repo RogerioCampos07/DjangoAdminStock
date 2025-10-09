@@ -29,6 +29,28 @@ class Brand(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Batch(models.Model):
+    product = models.ForeignKey(
+        'Product', on_delete=models.CASCADE, related_name='batches'
+    )
+    batch_code = models.CharField(max_length=100, unique=True)
+    expiration_date = models.DateField()
+    manufacturing_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'batch'
+        verbose_name = 'Lote'
+        verbose_name_plural = 'Lotes'
+        ordering = ['-manufacturing_date']
+
+    def __str__(self):
+        return f'{self.product.name} - {self.batch_code}'
+    
+
+    
+
 
 
 class Product(models.Model):
@@ -46,6 +68,7 @@ class Product(models.Model):
     supplier = models.ManyToManyField(
         'supplier.Supplier', related_name='products'
     )
+    has_batch = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

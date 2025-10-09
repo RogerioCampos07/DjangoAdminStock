@@ -1,6 +1,17 @@
 from django.contrib import admin
 
-from .models import Brand, Product, ProductCategory
+from .models import Brand, Product, ProductCategory, Batch
+
+@admin.register(Batch)
+class BatchAdmin(admin.ModelAdmin):
+    list_display = ('product','batch_code','expiration_date','manufacturing_date')
+    search_fields = ('product__name', 'batch_code')
+    ordering = ('product__name',)
+
+
+
+
+
 
 
 @admin.register(ProductCategory)
