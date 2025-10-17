@@ -1,99 +1,107 @@
-# DjangoAdminStock
+# Django Admin Stock
 
-## Sobre o Projeto
+Um sistema de gestão de estoque robusto e funcional, construído inteiramente sobre a interface de administração do Django.
 
-Este é o **`django-admin-stock`**, um sistema de gestão de estoque construído sobre o **Admin do Django**. O objetivo é ter uma ferramenta simples e funcional para controlar produtos, fornecedores e o fluxo de estoque de forma centralizada.
+## Visão Geral
 
-A estrutura do projeto é modular, com apps bem definidos para facilitar a organização e manutenção:
+O **`django-admin-stock`** oferece uma solução centralizada para o controle de produtos, fornecedores e o fluxo de estoque. A automação inteligente via `signals` garante que cada movimentação (entrada, saída ou ajuste) atualize o saldo de estoque em tempo real, proporcionando dados precisos e confiáveis.
 
+### Principais Funcionalidades
+
+- **Gestão de Catálogo**: Cadastro de produtos, categorias, marcas e lotes.
+- **Gestão de Fornecedores**: Gerenciamento de fornecedores e seus representantes.
+- **Controle de Movimentações**: Registro detalhado de todas as entradas, saídas e ajustes de estoque.
+- **Estoque Automatizado**: O saldo de estoque é atualizado automaticamente e é somente leitura, prevenindo inconsistências.
+- **Validação de Dados**: Regras de negócio implementadas para garantir a integridade dos dados, como a validação de estoque negativo.
+
+## Estrutura do Projeto
+
+O projeto segue uma arquitetura modular para facilitar a manutenção e escalabilidade:
+
+- **`core`**: Configurações centrais do projeto Django.
 - **`supplier`**: Gerencia fornecedores e seus contatos.
-- **`product`**: Gerencia produtos, categorias e marcas.
-- **`movement_stock`**: Gerencia as entradas e saídas de produtos.
-- **`inventory`**: Gerencia o estoque atual de cada produto.
+- **`product`**: Gerencia produtos, categorias, marcas e lotes.
+- **`movement_stock`**: Registra todas as movimentações de estoque. A criação de um registro aqui dispara um `signal` que atualiza o inventário.
+- **`inventory`**: Mantém o saldo atual de cada produto/lote. Os dados são somente leitura e gerenciados automaticamente pelos `signals`.
 
----
+## Primeiros Passos
 
-## Requisitos do Sistema
+Siga estas instruções para configurar e executar o projeto em seu ambiente de desenvolvimento.
 
-- **Linux**: Nosso ambiente de desenvolvimento e produção.
-- **Python 3.13.3**
-- **Poetry**
-- **Docker** (opcional, para a fase de deploy)
+### Pré-requisitos
 
----
+- **Python** (versão `3.12` ou superior)
+- **Poetry** (para gerenciamento de dependências)
 
-## Configuração e Instalação
+### Guia de Instalação
 
-### 1. Clone o repositório
+1.**Clone o repositório:**
+    ```bash
+    git clone https://github.com/RogerioCampos07/DjangoAdminStock.git
+    cd DjangoAdminStock
+    ```
 
-```bash
-git clone https://github.com/RogerioCampos07/DjangoAdminStock.git
-cd django-admin-stock
-```
+2.**Configure as variáveis de ambiente:**
+    Copie o arquivo de exemplo `.env.example` para um novo arquivo chamado `.env`.
+    ```bash
+    cp .env.example .env
+    ```
+    Abra o arquivo `.env` e **gere uma nova `SECRET_KEY`**. Você pode usar o comando abaixo para gerar uma:
+    ```bash
+    python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+    ```
 
-### 2. Instale as dependências com Poetry
+3.**Instale as dependências:**
+    O Poetry criará um ambiente virtual e instalará todas as dependências listadas no `pyproject.toml`.
+    ```bash
+    poetry install
+    ```
 
-```bash
-poetry install
-```
+4.**Ative o ambiente virtual:**
+    ```bash
+    source .venv/bin/activate
+    ```
 
-Este comando lê o arquivo `pyproject.toml`, instala todas as dependências e cria um ambiente virtual isolado.
+5.**Aplique as migrações do banco de dados:**
+    ```bash
+    python manage.py migrate
+    ```
 
-### 3. Ative o ambiente virtual
+6.**Crie um superusuário:**
+    Você usará este usuário para acessar o painel de administração.
+    ```bash
+    python manage.py createsuperuser
+    ```
 
-```bash
-source ./venv/bin/activate
-```
+7.**Inicie o servidor de desenvolvimento:**
+    ```bash
+    python manage.py runserver
+    ```
 
-Isso ativa o ambiente virtual criado pelo Poetry, permitindo executar os comandos do Django.
+Pronto! A aplicação estará rodando em `http://127.0.0.1:8000/`.
 
-### 4. Execute as migrações do banco de dados
+## Como Utilizar
 
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
+O fluxo de trabalho do sistema foi projetado para ser intuitivo e segue uma ordem lógica de cadastro.
 
-### 5. Crie um superusuário
+1.**Acesse o painel de administração:**
+    Vá para `http://127.0.0.1:8000/admin/` e faça login com o superusuário criado.
 
-```bash
-python manage.py createsuperuser
-```
+2.**Cadastre os dados básicos:**
+    - **Produtos > Categorias de Produtos**
+    - **Produtos > Marcas**
 
-### 6. Inicie o servidor de desenvolvimento
+3.**Cadastre os Fornecedores:**
+    - **Supplier > Fornecedores**
+    - **Supplier > Representantes** (associando-os a um fornecedor)
 
-```bash
-python manage.py runserver
-```
+4.**Cadastre seus Produtos:**
+    - Em **Produtos > Produtos**, crie novos itens, associando-os a categorias, marcas e fornecedores.
 
-Com o servidor rodando, acesse `http://localhost:8000/admin/` no navegador e faça login com o superusuário criado.
-
----
-
-## Como Usar
-
-O projeto é inteiramente baseado no painel de administração do Django. Siga a ordem de cadastro:
-
-1. Acesse o painel em `http://localhost:8000/admin/`.
-2. Cadastre **Categorias de Produto** e **Marcas**.
-3. Cadastre os **Fornecedores** e, em seguida, seus **Representantes Comerciais**.
-4. Crie os **Produtos** associando-os às categorias, marcas e fornecedores.
-5. Use o painel de **Movimentação de Estoque** para registrar as entradas e saídas; o painel de **Estoque** é atualizado automaticamente.
-
----
+5.**Gerencie o Estoque:**
+    - Use **Movimentos de Estoque > Adicionar** para registrar entradas, saídas ou ajustes.
+    - O painel de **Estoque** será atualizado automaticamente e serve apenas para consulta.
 
 ## Contribuindo
 
-Sinta-se à vontade para contribuir seguindo o fluxo padrão:
-
-1. Faça um fork do projeto.
-2. Crie uma nova branch: `git checkout -b feature/minha-melhoria`.
-3. Implemente mudanças e faça commit: `git commit -am 'Adiciona uma melhoria top'`.
-4. Envie a branch: `git push origin feature/minha-melhoria`.
-5. Abra um Pull Request.
-
----
-
-## Licença
-
-Este projeto está sob a licença MIT. Consulte o arquivo `LICENSE` para mais detalhes.
+Contribuições são bem-vindas! Sinta-se à vontade para fazer um fork do projeto, criar uma branch para sua feature e abrir um Pull Request.
